@@ -1,13 +1,16 @@
 " Check we actually have PHP installed, otherwise you'll never be able to save
-if exists("loadedPHPLint") || !executable('php')
+if !executable('php')
     finish
 endif
 
-let loadedPHPLint = 1
+" Remove the autocmd in favor of a command
+"autocmd BufWriteCmd * execute('call LintPHPFile()')
+" TODO: Range
+" TODO: Highlight
+" TODO: All good message
+command! PHPLint call LintPHPFile()
 
-autocmd BufWriteCmd * execute('call LintPHPFile()')
-
-function LintPHPFile()
+function! LintPHPFile()
     if &filetype == 'php'
         let thisFile = expand("%")
 
@@ -67,5 +70,5 @@ function LintPHPFile()
     endif
 
     " We have to handle the write op ourselves, as we overrode it
-    noautocmd w
+    "noautocmd w
 endf
